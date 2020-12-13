@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inven.mapper.RequestMapper">
+
+	<sql id="columns">
+		*
+	</sql>
+	
+	<select id="selectAll" parameterType="hashMap" resultType="hashmap">
+		select <include refid="columns"/>
+		from request_title rt
+		join request_detail rd
+		on rt.request_code = rd.request_code
+	</select>
+	
+</mapper>

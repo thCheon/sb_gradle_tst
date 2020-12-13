@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>비밀번호 : cloth</h1>
+	<form action="loginCheck.do" method="get" id="frm" onsubmit="return passCheck(this)">
+		<input type="password" name="pwd" required>
+		<button type="submit">접속</button>
+		<button type="button" onclick="passCheck(document.getElementById('frm'))">asf</button>
+	</form>
+	
+	<script>
+		function passCheck(frm){
+			var xhr = new XMLHttpRequest();
+			/* 준비상태가 변하면 실행한다. */
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === xhr.DONE) {
+					/* 상태가 200, 201 이면 서버 통신 성공 */
+					if (xhr.status === 200 || xhr.status === 201) {
+						var jobj = JSON.parse(xhr.responseText);
+						if(jobj.code == 200){
+							location.href="main.do";
+						} else {
+							alert('비밀번호 잘못입력');
+							frm.pwd.value = '';/* 틀린 비밀번호 지워주기 */
+						}
+					} else {
+						/* 서버통신 실패 */
+						console.error(xhr.responseText);
+					}
+				}
+			};
+			/* 메소드에 따라 다른방식의 접근을 해줘야한다. */
+			if(frm.method == 'get'){
+				xhr.open(frm.method, frm.action+toparamJson(serializeForm(frm)), false);
+				xhr.send();
+			} else {
+				xhr.open(frm.method, frm.action, false);
+				xhr.send(new formData(frm));
+			}
+			
+			return false;
+		}
+	</script>
+	<!-- 아래 주소 Ctrl+click 하면 들어가짐 -->
+	<script src="js/utils.js"></script>
+</body>
+</html>
